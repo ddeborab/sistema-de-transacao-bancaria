@@ -52,7 +52,6 @@ void ValidaCodigo(long int codigo, clientes *primeiro, clientes *proximoCliente,
   while(proximoCliente->nome!=nome && proximoCliente->codigo!=codigoGlobal){
     if(proximoCliente->codigo==codigo){
       printf("Código já cadastrado. Digite outro codigo\n");
-      printf("%ld, %ld\n",proximoCliente->codigo,codigo);
       scanf("%ld",&codigo);
       ValidaCodigo(codigo, primeiro, proximoCliente,nome);
     }
@@ -69,7 +68,6 @@ void ValidaCPF(long int cpf, clientes *primeiro, clientes *proximoCliente, char 
   while(proximoCliente->nome!=nome && proximoCliente->cpf!=CPFGlobal){
     if(proximoCliente->cpf==cpf){
       printf("CPF já cadastrado. Digite outro CPF\n");
-      printf("%ld, %ld\n",proximoCliente->cpf,cpf);
       scanf("%ld",&cpf);
       ValidaCPF(cpf, primeiro, proximoCliente,nome);
     }
@@ -80,7 +78,7 @@ void ValidaCPF(long int cpf, clientes *primeiro, clientes *proximoCliente, char 
   proximoCliente->cpf=cpf;
 }
 
-void CadastroCliente(clientes *primeiro, clientes *proximoCliente, clientes *inicio){
+void CadastroCliente(clientes *primeiro, clientes *proximoCliente){
   
   int x=0;
   long int codigo;
@@ -104,11 +102,17 @@ void CadastroCliente(clientes *primeiro, clientes *proximoCliente, clientes *ini
   printf("Aperte outra tecla para voltar ao menu\n");
  scanf("%d%*c",&x);
   if(x==1){   
-    CadastroCliente(primeiro,proximoCliente, inicio);
+    CadastroCliente(primeiro,proximoCliente);
   }
 }
 
-
+void listarClientes(clientes *primeiro, clientes *proximoCliente){
+  proximoCliente = primeiro;
+  while(proximoCliente!=NULL){
+    printf("%s\n",proximoCliente->nome);
+    proximoCliente = proximoCliente->proximoCliente;
+  }
+}
 
 
 int main(){
@@ -120,15 +124,13 @@ int main(){
   while(resposta != 14){
     menu();
     if(resposta ==1){
-      CadastroCliente(primeiro,proximoCliente, inicio);
+      CadastroCliente(primeiro,proximoCliente);
+    }
+    else if(resposta==3){
+      listarClientes(primeiro, proximoCliente);
     }
   }
   
-//Apenas para visualizar dados
-  while(primeiro!=NULL){
-    printf("%s, %ld\n",primeiro->nome, primeiro->codigo);
-    primeiro = primeiro->proximoCliente;
-  }
  
 
 
