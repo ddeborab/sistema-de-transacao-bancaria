@@ -120,7 +120,7 @@ void buscaCliente(clientes *primeiro, clientes *proximoCliente){
   printf("Digite o código do cliente pelo qual deseja buscar\n");
   scanf("%ld",&code);
   proximoCliente = primeiro;
-  while(proximoCliente!=NULL){
+  while(proximoCliente->preenchido==1){
     if(proximoCliente->codigo==code){
       printf("Cliente encontrado:\n");
       printf("Nome: %s\n", proximoCliente->nome);
