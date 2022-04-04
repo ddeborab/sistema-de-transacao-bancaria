@@ -3,14 +3,14 @@
 #include <string.h>
 
 
-int resposta=0;
-int contador=0;
+int resposta=0,contador=0;
  int codigoGlobal=0, CPFGlobal=0;
 typedef struct clientes{
   char nome[100];
   long int codigo;
   long int cpf;
   char endereco[150];
+  int preenchido;
   struct clientes *proximoCliente;
 }clientes;
 
@@ -46,14 +46,15 @@ int menu(){
   return resposta;
 }
 
-void ValidaCodigo(long int codigo, clientes *primeiro, clientes *proximoCliente, char nome[130]){
+void ValidaCodigo(long int codigo, clientes *primeiro, clientes *proximoCliente){
   
   proximoCliente = primeiro;
-  while(proximoCliente->nome!=nome && proximoCliente->codigo!=codigoGlobal){
+  while(proximoCliente->preenchido==1){
+    printf("entrei\n");
     if(proximoCliente->codigo==codigo){
       printf("Código já cadastrado. Digite outro codigo\n");
       scanf("%ld",&codigo);
-      ValidaCodigo(codigo, primeiro, proximoCliente,nome);
+      ValidaCodigo(codigo, primeiro, proximoCliente);
     }
     else{
       proximoCliente = proximoCliente->proximoCliente;
@@ -62,14 +63,14 @@ void ValidaCodigo(long int codigo, clientes *primeiro, clientes *proximoCliente,
   proximoCliente->codigo=codigo;
 }
 
-void ValidaCPF(long int cpf, clientes *primeiro, clientes *proximoCliente, char nome[130]){
+void ValidaCPF(long int cpf, clientes *primeiro, clientes *proximoCliente){
   
   proximoCliente = primeiro;
-  while(proximoCliente->nome!=nome && proximoCliente->cpf!=CPFGlobal){
+  while(proximoCliente->preenchido==1){
     if(proximoCliente->cpf==cpf){
       printf("CPF já cadastrado. Digite outro CPF\n");
       scanf("%ld",&cpf);
-      ValidaCPF(cpf, primeiro, proximoCliente,nome);
+      ValidaCPF(cpf, primeiro, proximoCliente);
     }
     else{
       proximoCliente = proximoCliente->proximoCliente;
@@ -79,52 +80,73 @@ void ValidaCPF(long int cpf, clientes *primeiro, clientes *proximoCliente, char 
 }
 
 void CadastroCliente(clientes *primeiro, clientes *proximoCliente){
+  proximoCliente=primeiro;
+
+  while(proximoCliente->preenchido==1){
+    proximoCliente=proximoCliente->proximoCliente;
+    printf("1");
+  }
   
-  int x=0;
   long int codigo;
   long int cpf;
   printf("Digite o nome do cliente a ser cadastrado\n");
-  scanf("%[^\n]s%*c",proximoCliente->nome);
+  scanf(" %[^\n]s%*c ",proximoCliente->nome);
   printf("Digite um código de segurança\n");
   scanf(" %ld",&codigo);
   proximoCliente->codigo = codigoGlobal;
   codigoGlobal++;
-  ValidaCodigo(codigo, primeiro, proximoCliente,proximoCliente->nome);
+  ValidaCodigo(codigo, primeiro, proximoCliente);
   printf("Digite o CPF do titular\n");
   scanf(" %ld",&cpf);
-  ValidaCPF(cpf, primeiro, proximoCliente,proximoCliente->nome);
+  ValidaCPF(cpf, primeiro, proximoCliente);
   printf("Digite o endereço\n");
   scanf(" %[^\n]s%*c",proximoCliente->endereco);
-
+  proximoCliente->preenchido=1;
+  proximoCliente->proximoCliente = (clientes*) malloc(sizeof(clientes));
   proximoCliente = proximoCliente->proximoCliente;
- proximoCliente->proximoCliente = (clientes*) malloc(sizeof(clientes));
- printf("1 - Cadastrar novo cliente\n");
-  printf("Aperte outra tecla para voltar ao menu\n");
- scanf("%d%*c",&x);
-  if(x==1){   
-    CadastroCliente(primeiro,proximoCliente);
-  }
 }
+
 
 void listarClientes(clientes *primeiro, clientes *proximoCliente){
   proximoCliente = primeiro;
-  while(proximoCliente!=NULL){
+  while(proximoCliente->preenchido==1){
     printf("%s\n",proximoCliente->nome);
     proximoCliente = proximoCliente->proximoCliente;
   }
 }
 
+void buscaCliente(clientes *primeiro, clientes *proximoCliente){
+  long int code;
+  printf("Digite o código do cliente pelo qual deseja buscar\n");
+  scanf("%ld",&code);
+  proximoCliente = primeiro;
+  while(proximoCliente!=NULL){
+    if(proximoCliente->codigo==code){
+      printf("Cliente encontrado:\n");
+      printf("Nome: %s\n", proximoCliente->nome);
+      printf("CPF: %ld\n", proximoCliente->cpf);
+      printf("Endereço: %s\n",proximoCliente->endereco);
+      return;
+    }
+    else
+    proximoCliente = proximoCliente->proximoCliente;
+  }
+  printf("Cliente não encontrado\n");
+}
 
 int main(){
   clientes *primeiro = (clientes*) malloc(sizeof(clientes));
   clientes *proximoCliente = primeiro;
-  proximoCliente->proximoCliente = (clientes*) malloc(sizeof(clientes));
-  clientes *inicio = primeiro;
+  primeiro->preenchido=0;
+ 
 
   while(resposta != 14){
     menu();
     if(resposta ==1){
       CadastroCliente(primeiro,proximoCliente);
+    }
+    else if(resposta==2){
+      buscaCliente(primeiro,proximoCliente);
     }
     else if(resposta==3){
       listarClientes(primeiro, proximoCliente);
