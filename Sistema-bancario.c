@@ -63,6 +63,23 @@ void ValidaCodigo(long int codigo, clientes *primeiro, clientes *proximoCliente)
   proximoCliente->codigo=codigo;
 }
 
+void ValidaCodigo2(long int codigo, clientes *primeiro, clientes *proximoCliente,clientes *referencia){
+  
+  proximoCliente = primeiro;
+  while(proximoCliente->preenchido==1){
+
+    if(proximoCliente->codigo==codigo && proximoCliente!=referencia){
+      printf("Código já cadastrado. Digite outro codigo\n");
+      scanf("%ld",&codigo);
+      ValidaCodigo2(codigo, primeiro, proximoCliente,referencia);
+    }
+    else{
+      proximoCliente = proximoCliente->proximoCliente;
+    }
+  }
+  referencia->codigo=codigo;
+}
+
 void ValidaCPF(long int cpf, clientes *primeiro, clientes *proximoCliente){
   
   proximoCliente = primeiro;
@@ -77,6 +94,23 @@ void ValidaCPF(long int cpf, clientes *primeiro, clientes *proximoCliente){
     }
   }
   proximoCliente->cpf=cpf;
+}
+
+void ValidaCPF2(long int CPF, clientes *primeiro, clientes *proximoCliente,clientes *referencia){
+  
+  proximoCliente = primeiro;
+  while(proximoCliente->preenchido==1){
+
+    if(proximoCliente->cpf==CPF && proximoCliente!=referencia){
+      printf("CPF já cadastrado. Digite outro CPF\n");
+      scanf("%ld",&CPF);
+      ValidaCodigo2(CPF, primeiro, proximoCliente,referencia);
+    }
+    else{
+      proximoCliente = proximoCliente->proximoCliente;
+    }
+  }
+  referencia->cpf=CPF;
 }
 
 void CadastroCliente(clientes *primeiro, clientes *proximoCliente){
@@ -130,6 +164,57 @@ void buscaCliente(clientes *primeiro, clientes *proximoCliente){
     }
     else
     proximoCliente = proximoCliente->proximoCliente;
+  }
+  printf("Cliente não encontrado\n");
+}
+
+void AtualizaCliente(clientes *primeiro, clientes *proximoCliente){
+  int codigo;
+  proximoCliente=primeiro;
+  printf("Digite o código do cliente que deseja buscar\n");
+  scanf("%d",&codigo);
+  while(proximoCliente->preenchido==1){
+    if(proximoCliente->codigo==codigo){
+      int resposta=0;
+      printf("1 - Alterar nome\n");
+      printf("2 - Alterar codigo\n");
+      printf("3 - Alterar cpf\n");
+      printf("4 - Alterar endereço\n");
+      scanf("%d",&resposta);
+      if(resposta==1){
+        printf("Digite o nome atualizado do cliente\n");
+        scanf(" %[^\n]s%*c",proximoCliente->nome);
+        printf("Dado atualizado\n");
+        return;
+      }
+      if(resposta==2){
+        long int codigo;
+        clientes *referencia = proximoCliente;
+        printf("Digite o novo código\n");
+        scanf("%ld",&codigo);
+         ValidaCodigo2(codigo,primeiro,proximoCliente,referencia);
+        referencia->codigo=codigo;
+        return;
+      }
+      if(resposta==3){
+        long int CPF;
+        clientes *referencia = proximoCliente;
+        printf("Digite o CPF atualizado do cliente\n");
+        scanf("%ld",&CPF);
+        ValidaCPF2(CPF,primeiro,proximoCliente,referencia);
+        referencia->cpf=CPF;
+        return;
+      }
+      if(resposta==4){
+        printf("Digite o novo endereço\n");
+        scanf("%[^\n]s%*c",proximoCliente->endereco);
+        printf("Dado atualizado\n");
+        return;
+      }
+    }
+    else{
+      proximoCliente=proximoCliente->proximoCliente;
+    }
   }
   printf("Cliente não encontrado\n");
 }
