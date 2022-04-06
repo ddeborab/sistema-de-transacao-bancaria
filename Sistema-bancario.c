@@ -28,14 +28,14 @@ int menu(){
   printf("3 - Listar clientes\n");
   printf("4 - Atualizar dados de cliente\n");
   printf("5 - Excluir cliente\n");
-  printf("7 - Cadastrar nova conta\n");
-  printf("8 - Buscar Conta\n");
-  printf("9 - Listar Contas\n");
-  printf("10 - Atualizar dados da conta\n");
-  printf("11 - Excluir conta\n");
-  printf("12 - Visualizar dados da conta\n");
-  printf("13 - Realizar Saque, trânsferência ou depósito\n");
-  printf("14 - Sair\n");
+  printf("6 - Cadastrar nova conta\n");
+  printf("7 - Buscar Conta\n");
+  printf("8 - Listar Contas\n");
+  printf("9 - Atualizar dados da conta\n");
+  printf("10 - Excluir conta\n");
+  printf("11 - Visualizar dados da conta\n");
+  printf("12 - Realizar Saque, trânsferência ou depósito\n");
+  printf("13 - Sair\n");
   scanf("%i%*c",&resposta);
   
   while(resposta!=1 &&resposta!=2 && resposta!=3 && resposta!=4 && resposta!=5 && resposta!=6 && resposta!=7 && resposta!=8 && resposta!=9 && resposta!=10 && resposta!=11 && resposta!=12 && resposta!=13 && resposta!=14){
