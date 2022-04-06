@@ -28,7 +28,6 @@ int menu(){
   printf("3 - Listar clientes\n");
   printf("4 - Atualizar dados de cliente\n");
   printf("5 - Excluir cliente\n");
-  printf("6 - Visualizar dados do cliente\n");
   printf("7 - Cadastrar nova conta\n");
   printf("8 - Buscar Conta\n");
   printf("9 - Listar Contas\n");
